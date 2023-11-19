@@ -2,7 +2,7 @@
 
 
 ```lua
-local ui=loadstring(game:HttpGet('url'))()
+local ui=loadstring(game:HttpGet('https://raw.githubusercontent.com/3345-c-a-t-s-u-s/Garry-UI/main/source'))()
 if not game:IsLoaded() then
 	game.Loaded:Wait()
 end
