@@ -29,7 +29,7 @@ local function ccp(ui:UIListLayout)
 		ui:GetPropertyChangedSignal('AbsoluteContentSize'):Connect(function()
 			TweenService:Create(pp,TweenInfo.new(0.4),{CanvasSize=UDim2.new(0,0,0,ui.AbsoluteContentSize.Y+15)}):Play()
 		end)
-		
+
 		TweenService:Create(pp,TweenInfo.new(0.4),{CanvasSize=UDim2.new(0,0,0,ui.AbsoluteContentSize.Y+15)}):Play()
 	end
 end
@@ -137,12 +137,12 @@ function Module:Create(WindowName:string,ScriptName:string,UserRoleName:string,C
 	local Windows = { 
 		TabFrames = { },
 	}
-	
+
 	WindowName = WindowName or ''
 	ScriptName = ScriptName or ""
 	UserRoleName=UserRoleName or "Member"
 	CustomImage=CustomImage or game:GetService('Players'):GetUserThumbnailAsync(LocalPlayer.UserId,Enum.ThumbnailType.HeadShot,Enum.ThumbnailSize.Size352x352)
-	
+
 	local ScreenGui = Instance.new("ScreenGui")
 	local Frame = Instance.new("Frame")
 	local UICorner = Instance.new("UICorner")
@@ -184,7 +184,7 @@ function Module:Create(WindowName:string,ScriptName:string,UserRoleName:string,C
 	ScreenGui.ResetOnSpawn = false
 	ScreenGui.IgnoreGuiInset=true
 	ScreenGui.ZIndexBehavior=Enum.ZIndexBehavior.Global
-	
+
 	Frame.Parent = ScreenGui
 	Frame.Active = true
 	Frame.AnchorPoint = Vector2.new(0.5, 0.5)
@@ -459,9 +459,40 @@ function Module:Create(WindowName:string,ScriptName:string,UserRoleName:string,C
 	UIGradient_2.Transparency = NumberSequence.new{NumberSequenceKeypoint.new(0.00, 1.00), NumberSequenceKeypoint.new(0.08, 0.00), NumberSequenceKeypoint.new(0.91, 0.00), NumberSequenceKeypoint.new(1.00, 1.00)}
 	UIGradient_2.Parent = Frame_3
 	
+
+	function Windows:MakeLogo(Id:string):nil
+		Id = tostring(Id)
+		
+		local ScriptHubLogo = Instance.new("ImageLabel")
+		local UICorner = Instance.new("UICorner")
+
+		if not Id:find('http://www.roblox.com/asset/?id=') and not Id:find('rbxassetid://') and not Id:find('/')then
+			Id = 'http://www.roblox.com/asset/?id='..Id
+		end
+
+		ScriptHubLogo.Name = "ScriptHubLogo"
+		ScriptHubLogo.Parent = Header
+		ScriptHubLogo.AnchorPoint = Vector2.new(0.5, 0.5)
+		ScriptHubLogo.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+		ScriptHubLogo.BackgroundTransparency = 1.000
+		ScriptHubLogo.BorderColor3 = Color3.fromRGB(0, 0, 0)
+		ScriptHubLogo.BorderSizePixel = 0
+		ScriptHubLogo.Position = UDim2.new(0.5, 0, 0.5, 0)
+		ScriptHubLogo.Size = UDim2.new(0.800000012, 0, 0.800000012, 0)
+		ScriptHubLogo.SizeConstraint = Enum.SizeConstraint.RelativeYY
+		ScriptHubLogo.ZIndex = 4
+		ScriptHubLogo.Image = Id
+		ScriptHubLogo.ScaleType = Enum.ScaleType.Fit
+
+		UICorner.CornerRadius = UDim.new(0.5, 0)
+		UICorner.Parent = ScriptHubLogo
+		
+		return ScriptHubLogo
+	end
+	
 	function Windows:CreateTab(TabName:string,IconName:string)
 		local Tab = { }
-		
+
 		local TabButton = Instance.new("Frame")
 		local UIAspectRatioConstraint = Instance.new("UIAspectRatioConstraint")
 		local UICorner = Instance.new("UICorner")
@@ -501,7 +532,7 @@ function Module:Create(WindowName:string,ScriptName:string,UserRoleName:string,C
 		Icon.ZIndex = 5
 		Icon.ImageTransparency=0.5
 		GetImageData(IconName,Icon)
-		
+
 		TextLabel.Parent = TabButton
 		TextLabel.AnchorPoint = Vector2.new(0.5, 0.5)
 		TextLabel.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
@@ -513,7 +544,7 @@ function Module:Create(WindowName:string,ScriptName:string,UserRoleName:string,C
 		TextLabel.ZIndex = 5
 		TextLabel.Font = Enum.Font.RobotoMono
 		TextLabel.RichText=true
-		
+
 		TextLabel.Text = "<b>"..tostring(TabName or nil).."</b>" or ''
 		TextLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
 		TextLabel.TextScaled = true
@@ -567,7 +598,7 @@ function Module:Create(WindowName:string,ScriptName:string,UserRoleName:string,C
 		UIStroke.Transparency = 0.250
 		UIStroke.Color = Color3.fromRGB(22, 25, 27)
 		UIStroke.Parent = TabFrame
-		
+
 		local function call(val)
 			if val then
 				TweenService:Create(Icon,TweenInfo.new(0.1),{ImageTransparency=0}):Play()
@@ -577,13 +608,13 @@ function Module:Create(WindowName:string,ScriptName:string,UserRoleName:string,C
 				TabFrame.Visible=false
 			end
 		end
-		
+
 		if not Windows.TabFrames[1] then
 			call(true)
 		else
 			call(false)
 		end
-		
+
 		table.insert(Windows.TabFrames,{TabFrame,call})
 		local t=cretate_button(TabButton)
 		t.MouseButton1Click:Connect(function()
@@ -596,7 +627,7 @@ function Module:Create(WindowName:string,ScriptName:string,UserRoleName:string,C
 				end
 			end
 		end)
-		
+
 		function Tab:CreateButton(ButtonName:string,callback:func)callback=callback or function()end
 			local Subway = {}
 			local Button = Instance.new("Frame")
@@ -636,32 +667,32 @@ function Module:Create(WindowName:string,ScriptName:string,UserRoleName:string,C
 			TextLabel.TextSize = 14.000
 			TextLabel.TextWrapped = true
 			TweenService:Create(TextLabel,TweenInfo.new(0.3),{TextTransparency=0.2}):Play()
-			
+
 			local b= cretate_button(Button)
 			b.MouseButton1Click:Connect(function()
 				Create_Ripple(b)
 				callback()
 			end)
-			
+
 			b.MouseEnter:Connect(function()
 				TweenService:Create(TextLabel,TweenInfo.new(0.3),{TextTransparency=0}):Play()
 			end)
-			
+
 			b.MouseLeave:Connect(function()
 				TweenService:Create(TextLabel,TweenInfo.new(0.3),{TextTransparency=0.5}):Play()
 			end)
-			
+
 			function Subway:Text(c)
 				TextLabel.Text=c
 			end
-			
+
 			function Subway:Fire(...)
 				callback(...)
 			end
-			
+
 			return Subway
 		end
-		
+
 		function Tab:CreateLabel(Labela:string)
 			local Label = Instance.new("Frame")
 			local UIAspectRatioConstraint = Instance.new("UIAspectRatioConstraint")
@@ -699,15 +730,15 @@ function Module:Create(WindowName:string,ScriptName:string,UserRoleName:string,C
 			TextLabel.TextScaled = true
 			TextLabel.TextSize = 14.000
 			TextLabel.TextWrapped = true
-			
+
 			local c = {} function c:Text(a)TextLabel.Text=a end return c
 		end
-		
+
 		function Tab:CreateToggle(ToggleName:string,Default:boolean,callback:FunctionalTest)
 			callback=callback or function()
-				
+
 			end
-			
+
 			local Toggle = Instance.new("Frame")
 			local UIAspectRatioConstraint = Instance.new("UIAspectRatioConstraint")
 			local UICorner = Instance.new("UICorner")
@@ -751,7 +782,7 @@ function Module:Create(WindowName:string,ScriptName:string,UserRoleName:string,C
 			TextLabel.TextSize = 14.000
 			TextLabel.TextWrapped = true
 			TextLabel.TextXAlignment = Enum.TextXAlignment.Left
-			
+
 
 			ToggleOS.Name = "ToggleOS"
 			ToggleOS.Parent = Toggle
@@ -796,11 +827,11 @@ function Module:Create(WindowName:string,ScriptName:string,UserRoleName:string,C
 					TweenService:Create(Smootv,TweenInfo.new(0.1),{Size=UDim2.fromScale(0,0)}):Play()
 					TweenService:Create(TextLabel,TweenInfo.new(0.3),{TextTransparency=0.5}):Play()
 				end
-				
+
 			end
-			
+
 			toggle(Default)
-			
+
 			local t=cretate_button(Toggle)
 			t.MouseButton1Click:Connect(function()
 				Default=not Default
@@ -808,27 +839,27 @@ function Module:Create(WindowName:string,ScriptName:string,UserRoleName:string,C
 				Create_Ripple(t)
 				callback(Default)
 			end)
-			
+
 			local text={}
-			
+
 			function text:Value(c,...)
 				Default=c
 				toggle(c)
 				callback(c,...)				
 			end
-			
+
 			function text:Text(a)
 				TextLabel.Text=tostring(a)
 			end
-			
+
 			return text
 		end
-		
+
 		function Tab:CreateKeybind(KeybindName:string,default:Enum.KeyCode,callback:FunctionalTest)
 			callback=callback or function()
 
 			end
-			
+
 			local Keybind = Instance.new("Frame")
 			local UIAspectRatioConstraint = Instance.new("UIAspectRatioConstraint")
 			local UICorner = Instance.new("UICorner")
@@ -837,15 +868,15 @@ function Module:Create(WindowName:string,ScriptName:string,UserRoleName:string,C
 			local UICorner_2 = Instance.new("UICorner")
 			local UIStroke = Instance.new("UIStroke")
 			local keyhold = Instance.new("TextLabel")
-			
+
 			local function totext(em:Enum.KeyCode)
 				if not em or em==nil then
 					return "None"
 				end
-				
+
 				return em.Name
 			end
-			
+
 			Keybind.Name = "Keybind"
 			Keybind.Parent = Items
 			Keybind.BackgroundColor3 = Color3.fromRGB(47, 49, 54)
@@ -921,7 +952,7 @@ function Module:Create(WindowName:string,ScriptName:string,UserRoleName:string,C
 				local x=TextService:GetTextSize(keyhold.Text,keyhold.TextSize,keyhold.Font,Vector2.new(math.huge,math.huge))
 				TweenService:Create(OS,TweenInfo.new(0.2),{Size=UDim2.new(0,x.X/1.5,0.6,0)}):Play()
 			end
-			
+
 			UpdateSieze()
 			TweenService:Create(TextLabel,TweenInfo.new(0.1),{TextTransparency=0.5}):Play()
 			local IsHold=false
@@ -941,7 +972,7 @@ function Module:Create(WindowName:string,ScriptName:string,UserRoleName:string,C
 						BIND_VAL=k.KeyCode
 					end
 				end)
-				
+
 				repeat task.wait() until BIND_VAL ~= nil
 				pcall(function()
 					BIND:Disconnect()
@@ -952,7 +983,7 @@ function Module:Create(WindowName:string,ScriptName:string,UserRoleName:string,C
 				UpdateSieze()
 				callback(BIND_VAL)
 			end)
-			
+
 			local text={}
 
 			function text:Value(c,...)
@@ -968,12 +999,12 @@ function Module:Create(WindowName:string,ScriptName:string,UserRoleName:string,C
 
 			return text
 		end
-		
+
 		function Tab:CreateSlider(SliderName:string,Min:number,Max:number,Default:number,callback:FunctionalTest)
 			Max=Max or 100
 			Min =Min or 1
 			Default=Default or Min
-			
+
 			local Slider = Instance.new("Frame")
 			local UIAspectRatioConstraint = Instance.new("UIAspectRatioConstraint")
 			local UICorner = Instance.new("UICorner")
@@ -1063,7 +1094,7 @@ function Module:Create(WindowName:string,ScriptName:string,UserRoleName:string,C
 			UICorner_3.CornerRadius = UDim.new(0, 2)
 			UICorner_3.Parent = OS_UI
 			TweenService:Create(TextLabel,TweenInfo.new(0.1),{TextTransparency=0.5}):Play()
-			
+
 			local danger = false
 
 			local function update(Input)
@@ -1097,7 +1128,7 @@ function Module:Create(WindowName:string,ScriptName:string,UserRoleName:string,C
 					end
 				end
 			end)
-			
+
 			local text={}
 
 			function text:Value(c,...)
@@ -1113,26 +1144,26 @@ function Module:Create(WindowName:string,ScriptName:string,UserRoleName:string,C
 
 			return text
 		end
-		
+
 		return Tab
 	end
-	
+
 	local UserInfoToggle=false
 	local dragToggle = nil
 	local dragSpeed = 0.1
 	local dragStart = nil
 	local startPos = nil
-	
+
 	TopBar.MouseEnter:Connect(function()
 		TweenService:Create(TopBar,TweenInfo.new(0.15),{Position=UDim2.new(1.005, 0,0.015, 0)}):Play()
 	end)
-	
+
 	TopBar.MouseLeave:Connect(function()
 		if not UserInfoToggle then
 			TweenService:Create(TopBar,TweenInfo.new(0.15),{Position=UDim2.new(0.975, 0,0.015, 0)}):Play()
 		end
 	end)
-	
+
 	TopBarButton.MouseButton1Click:Connect(function()
 		UserInfoToggle=not UserInfoToggle
 		if UserInfoToggle then
@@ -1146,7 +1177,7 @@ function Module:Create(WindowName:string,ScriptName:string,UserRoleName:string,C
 			TweenService:Create(TopBarButton,TweenInfo.new(0.15),{ImageTransparency=0.45}):Play()
 		end
 	end)
-	
+
 	local function updateInput(input)
 		local delta = input.Position - dragStart
 		local position = UDim2.new(startPos.X.Scale, startPos.X.Offset + delta.X,
@@ -1175,6 +1206,83 @@ function Module:Create(WindowName:string,ScriptName:string,UserRoleName:string,C
 		end
 	end)
 	
+	local Framefae = Instance.new("Frame")
+	local UICorner = Instance.new("UICorner")
+	local DropShadow = Instance.new("ImageLabel")
+	local TextButton = Instance.new("TextButton")
+
+	Framefae.Parent = ScreenGui
+	Framefae.BackgroundColor3 = Color3.fromRGB(41, 43, 47)
+	Framefae.BorderColor3 = Color3.fromRGB(0, 0, 0)
+	Framefae.BorderSizePixel = 0
+	Framefae.Position = UDim2.new(0.657291651, 0, 0.0101902178, 0)
+	Framefae.Size = UDim2.new(0, 111, 0, 28)
+	Framefae.ZIndex = 66
+
+	UICorner.CornerRadius = UDim.new(0, 5)
+	UICorner.Parent = Framefae
+
+	DropShadow.Name = "DropShadow"
+	DropShadow.Parent = Framefae
+	DropShadow.AnchorPoint = Vector2.new(0.5, 0.5)
+	DropShadow.BackgroundTransparency = 1.000
+	DropShadow.BorderSizePixel = 0
+	DropShadow.Position = UDim2.new(0.5, 0, 0.5, 0)
+	DropShadow.Size = UDim2.new(1, 27, 1, 27)
+	DropShadow.ZIndex = 0
+	DropShadow.Image = "rbxassetid://6014261993"
+	DropShadow.ImageColor3 = Color3.fromRGB(0, 0, 0)
+	DropShadow.ImageTransparency = 0.500
+	DropShadow.ScaleType = Enum.ScaleType.Slice
+	DropShadow.SliceCenter = Rect.new(49, 49, 450, 450)
+
+	TextButton.Parent = Framefae
+	TextButton.AnchorPoint = Vector2.new(0.5, 0.5)
+	TextButton.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+	TextButton.BackgroundTransparency = 1.000
+	TextButton.BorderColor3 = Color3.fromRGB(0, 0, 0)
+	TextButton.BorderSizePixel = 0
+	TextButton.Position = UDim2.new(0.5, 0, 0.5, 0)
+	TextButton.Size = UDim2.new(0.899999976, 0, 0.754000008, 0)
+	TextButton.ZIndex = 77
+	TextButton.Font = Enum.Font.RobotoMono
+	TextButton.RichText = true
+	TextButton.Text = "<b>"..tostring(WindowName).."</b>"
+	TextButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+	TextButton.TextScaled = true
+	TextButton.TextSize = 14.000
+	TextButton.TextWrapped = true
+	TextButton.TextTransparency = 0
+	
+	local tog = true
+	TextButton.MouseEnter:Connect(function()
+		TweenService:Create(DropShadow,TweenInfo.new(0.5),{ImageColor3 = Color3.fromRGB(255, 255, 255)}):Play()
+	end)
+	
+	TextButton.MouseLeave:Connect(function()
+		TweenService:Create(DropShadow,TweenInfo.new(0.5),{ImageColor3 = Color3.fromRGB(0, 0, 0)}):Play()
+	end)
+	
+	TextButton.MouseButton1Click:Connect(function()
+		tog = not tog
+		if tog then
+			TweenService:Create(TextButton,TweenInfo.new(0.5),{TextTransparency = 0}):Play()
+			TweenService:Create(Frame,TweenInfo.new(0.5,Enum.EasingStyle.Quint),{Size=UDim2.new(0.100000001, 350, 0.100000001, 250),Position = UDim2.new(0.5,0,0.5,0)}):Play()
+		else
+			TweenService:Create(TextButton,TweenInfo.new(0.5),{TextTransparency = 0.2}):Play()
+			TweenService:Create(Frame,TweenInfo.new(0.5,Enum.EasingStyle.Quint),{Size=UDim2.new(0,0,0,0)}):Play()
+		end
+	end)
+	
+	Frame:GetPropertyChangedSignal('Size'):Connect(function()
+		if Frame.Size.X.Scale <= 0.01 then
+			Frame.Visible = false
+		else
+			Frame.Visible = true
+		end
+	end)
+
+	
 	return Windows
 end
 
@@ -1191,7 +1299,7 @@ function Module:MakeLoad(TITLE:string,TITLE_TWO:string)
 	ScreenGui.ResetOnSpawn = false
 	ScreenGui.IgnoreGuiInset=true
 	ScreenGui.ZIndexBehavior=Enum.ZIndexBehavior.Global
-	
+
 	Loader.Name = "Loader"
 	Loader.Parent = ScreenGui
 	Loader.AnchorPoint = Vector2.new(0.5, 0.5)
@@ -1203,7 +1311,7 @@ function Module:MakeLoad(TITLE:string,TITLE_TWO:string)
 	Loader.Size = UDim2.new(0.100000001, 150, 0.100000001, 100)
 	Loader.ZIndex = 17
 	Loader.BackgroundTransparency=1
-	
+
 	UICorner.CornerRadius = UDim.new(0, 5)
 	UICorner.Parent = Loader
 
@@ -1243,7 +1351,7 @@ function Module:MakeLoad(TITLE:string,TITLE_TWO:string)
 	Title.TextSize = 14.000
 	Title.TextWrapped = true
 	Title.TextTransparency=1--0
-	
+
 	UnderTitle.Name = "UnderTitle"
 	UnderTitle.Parent = Loader
 	UnderTitle.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
@@ -1280,7 +1388,7 @@ function Module:MakeLoad(TITLE:string,TITLE_TWO:string)
 	UnderTitle_2.TextSize = 14.000
 	UnderTitle_2.TextTransparency = 1--0.250
 	UnderTitle_2.TextWrapped = true
-	
+
 	TweenService:Create(Top,TweenInfo.new(0.4),{Position=UDim2.new(0.5,0,0.25,0)}):Play()
 	TweenService:Create(Bottom,TweenInfo.new(0.4),{Position=UDim2.new(0.5,0,0.75,0)}):Play()
 	TweenService:Create(Loader,TweenInfo.new(0.5,Enum.EasingStyle.Quint,Enum.EasingDirection.In),{BackgroundTransparency=0}):Play()
