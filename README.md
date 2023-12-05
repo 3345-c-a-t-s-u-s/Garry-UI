@@ -2,30 +2,48 @@
 
 
 ```lua
-local ui=loadstring(game:HttpGet('https://raw.githubusercontent.com/3345-c-a-t-s-u-s/Garry-UI/main/source'))()
-if not game:IsLoaded() then
-	game.Loaded:Wait()
-end
-task.wait(3)
-ui:MakeLoad("LOAD","ADADADADAD")
-getfenv().MyUI = ui:Create("BEDOL HUB","SERVER")
+local GarryUI = loadstring(game:HttpGet('https://raw.githubusercontent.com/3345-c-a-t-s-u-s/Garry-UI/main/source'))()
 
-local d= MyUI:CreateTab("Example",'earth')
-d:CreateLabel("TITLE")
-d:CreateButton("BUTTON",function()
-	print('ccccc')
-end)
-d:CreateToggle("TOGGLE",false,function()
-	
+local Window = GarryUI:Create('BEDOL HUB','BLADE BALL','TESTER')
+local ExampleTab = Window:CreateTab('Example','earth')
+
+ExampleTab:CreateButton("Button",function()
+	print('press button')
 end)
 
-d:CreateKeybind("KEYBINDS",nil,function()
-	
+ExampleTab:CreateLabel("Label")
+
+ExampleTab:CreateToggle("Toggle",false,function(val)
+	print('toggle',val)
 end)
 
-d:CreateSlider("SLIDER",1,10,5,function()
-	
+ExampleTab:CreateKeybind("Keybind",Enum.KeyCode.E,function(val)
+	print('keybind',val)
 end)
 
-MyUI:CreateTab("Example2",'list')
+ExampleTab:CreateSlider("Slider",1,100,10,function(val)
+	print('slider',val)
+end)
+
+Window:CreateButton('earth',false,function(val)
+	print('set time')
+	if val then
+		Window:Notify('Time Change','Night',1.5)
+		game:GetService('TweenService'):Create(game:GetService('Lighting'),TweenInfo.new(0.5),{ClockTime = 0}):Play()
+	else
+		Window:Notify('Time Change','Day',1.5)
+		game:GetService('TweenService'):Create(game:GetService('Lighting'),TweenInfo.new(0.5),{ClockTime = 14}):Play()
+	end
+end)
+
+Window:CreateButton('ads',false,function(val)
+	print('fov change')
+	if val then
+		Window:Notify('FOV Change','120',1)
+		game:GetService('TweenService'):Create(workspace.CurrentCamera,TweenInfo.new(0.5),{FieldOfView = 120}):Play()
+	else
+		Window:Notify('FOV Change','70',1)
+		game:GetService('TweenService'):Create(workspace.CurrentCamera,TweenInfo.new(0.5),{FieldOfView = 70}):Play()
+	end
+end)
 ```
