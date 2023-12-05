@@ -1147,7 +1147,7 @@ function Module:Create(WindowName:string,ScriptName:string,UserRoleName:string,C
 
 		return Tab
 	end
-	
+
 	local IconButtons = Instance.new("Frame")
 	local UIListLayout = Instance.new("UIListLayout")
 
@@ -1165,7 +1165,7 @@ function Module:Create(WindowName:string,ScriptName:string,UserRoleName:string,C
 	UIListLayout.HorizontalAlignment = Enum.HorizontalAlignment.Center
 	UIListLayout.SortOrder = Enum.SortOrder.LayoutOrder
 	UIListLayout.Padding = UDim.new(0, 9)
-	
+
 	local Notify = Instance.new("Frame")
 	local UICorner = Instance.new("UICorner")
 	local UIListLayout = Instance.new("UIListLayout")
@@ -1188,10 +1188,10 @@ function Module:Create(WindowName:string,ScriptName:string,UserRoleName:string,C
 	UIListLayout.SortOrder = Enum.SortOrder.LayoutOrder
 	UIListLayout.VerticalAlignment = Enum.VerticalAlignment.Bottom
 	UIListLayout.Padding = UDim.new(0, 6)
-	
+
 	function Windows:Notify(HeadTit,BodyTit,Time)
 		Time = Time or 1.5
-		
+
 		local FrameNotify = Instance.new("Frame")
 		local UICorner = Instance.new("UICorner")
 		local UIStroke = Instance.new("UIStroke")
@@ -1256,7 +1256,7 @@ function Module:Create(WindowName:string,ScriptName:string,UserRoleName:string,C
 		Body.TextWrapped = true
 		Body.TextXAlignment = Enum.TextXAlignment.Left
 		Body.TextYAlignment = Enum.TextYAlignment.Top
-		
+
 		task.spawn(function()
 			task.wait(0.4)
 			task.wait(Time or 1.5)
@@ -1269,16 +1269,16 @@ function Module:Create(WindowName:string,ScriptName:string,UserRoleName:string,C
 			end)
 		end)
 	end
-	
+
 	function Windows:CreateButton(IconId:string,Default:boolean,Callback)
 		if not Callback then
 			return
 		end
-		
+
 		Callback = Callback or function()
-			
+
 		end
-		
+
 		local UserInfoToggle=Default or false
 		local Frame = Instance.new("Frame")
 		local TopBar = Instance.new("Frame")
@@ -1322,7 +1322,7 @@ function Module:Create(WindowName:string,ScriptName:string,UserRoleName:string,C
 		TopBarButton.Size = UDim2.new(0.899999976, 0, 0.899999976, 0)
 		GetImageData(IconId,TopBarButton)
 		TopBarButton.ImageTransparency = 0.450
-		
+
 		TopBar.MouseEnter:Connect(function()
 			TweenService:Create(TopBar,TweenInfo.new(0.15),{Position=UDim2.new(0.95,0,0.5,0)}):Play()
 		end)
@@ -1334,8 +1334,10 @@ function Module:Create(WindowName:string,ScriptName:string,UserRoleName:string,C
 		end)
 
 		if UserInfoToggle then
+			TweenService:Create(TopBar,TweenInfo.new(0.15),{Position=UDim2.new(0.95,0,0.5,0)}):Play()
 			TweenService:Create(TopBarButton,TweenInfo.new(0.15),{ImageTransparency=0}):Play()
 		else
+			TweenService:Create(TopBar,TweenInfo.new(0.15),{Position=UDim2.new(0.5,0,0.5,0)}):Play()
 			TweenService:Create(TopBarButton,TweenInfo.new(0.15),{ImageTransparency=0.45}):Play()
 		end
 		TopBarButton.MouseButton1Click:Connect(function()
@@ -1345,11 +1347,11 @@ function Module:Create(WindowName:string,ScriptName:string,UserRoleName:string,C
 			else
 				TweenService:Create(TopBarButton,TweenInfo.new(0.15),{ImageTransparency=0.45}):Play()
 			end
-			
+
 			Callback(UserInfoToggle)
 		end)
 	end
-	
+
 	local UserInfoToggle=false
 	local dragToggle = nil
 	local dragSpeed = 0.1
