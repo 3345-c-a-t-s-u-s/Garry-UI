@@ -1,10 +1,6 @@
-# Garry-UI
+local sex = loadstring(game:HttpGet('https://raw.githubusercontent.com/3345-c-a-t-s-u-s/Garry-UI/main/source'))()
 
-
-```lua
-local GarryUI = loadstring(game:HttpGet('https://raw.githubusercontent.com/3345-c-a-t-s-u-s/Garry-UI/main/source'))()
-
-local Window = GarryUI:Create('BEDOL HUB','BLADE BALL','TESTER')
+local Window = sex:Create('BEDOL HUB','BLADE BALL','TESTER')
 local ExampleTab = Window:CreateTab('Example','earth')
 
 ExampleTab:CreateButton("Button",function()
@@ -46,4 +42,3 @@ Window:CreateButton('ads',false,function(val)
 		game:GetService('TweenService'):Create(workspace.CurrentCamera,TweenInfo.new(0.5),{FieldOfView = 70}):Play()
 	end
 end)
-```
