@@ -23,6 +23,8 @@ local function cretate_button(asd)
 	return button
 end
 
+local Icons = game:GetService('HttpService'):JSONDecode(game:HttpGet("https://raw.githubusercontent.com/evoincorp/lucideblox/master/src/modules/util/icons.json"))
+
 local function ccp(ui:UIListLayout)
 	if ui.Parent.ClassName=="ScrollingFrame" then
 		local pp:ScrollingFrame=ui.Parent
@@ -92,44 +94,58 @@ local function GetImageData(name:string,image:ImageLabel)
 		image.Image = NigImage
 		image.ImageRectOffset = Vector2.new(205,565)
 		image.ImageRectSize = Vector2.new(35,35)
+		return
 	end
 
 	if name == "list" then
 		image.Image = NigImage
 		image.ImageRectOffset = Vector2.new(485,205)
 		image.ImageRectSize = Vector2.new(35,35)
+		return
 	end
 
 	if name == "folder" then
 		image.Image = NigImage
 		image.ImageRectOffset = Vector2.new(805,45)
 		image.ImageRectSize = Vector2.new(35,35)
+		return
 	end
 
 	if name == "earth" then
 		image.Image = NigImage
 		image.ImageRectOffset = Vector2.new(604,324)
 		image.ImageRectSize = Vector2.new(35,35)
+		return
 	end
 
 	if name == "locked" then
 		image.Image = NigImage
 		image.ImageRectOffset = Vector2.new(524, 644)
 		image.ImageRectSize = Vector2.new(35,35)
+		return
 	end
 
 	if name == "home" then
 		image.Image = NigImage
 		image.ImageRectOffset = Vector2.new(964, 205)
 		image.ImageRectSize = Vector2.new(35,35)
+		return
 	end
 
 	if name == "mouse" then
 		image.Image = "rbxassetid://3515393063"
+		return
 	end
 
 	if name == "user" then
 		image.Image = "rbxassetid://10494577250"
+		return
+	end
+	
+	image.ImageRectOffset = Vector2.new(0, 0)
+	image.ImageRectSize = Vector2.new(0,0)
+	if Icons['icons'][name] then
+		image.Image = Icons['icons'][name]
 	end
 end
 
@@ -1205,7 +1221,7 @@ function Module:Create(WindowName:string,ScriptName:string,UserRoleName:string,C
 		FrameNotify.BorderSizePixel = 0
 		FrameNotify.Position = UDim2.new(0.767708361, 0, 0.585135102, 0)
 		FrameNotify.Size = UDim2.new(0, 0, 0, 0)
-		TweenService:Create(FrameNotify,TweenInfo.new(0.3),{Size = UDim2.new(1, 0, 0.449999988, 0)}):Play()
+		TweenService:Create(FrameNotify,TweenInfo.new(0.3),{Size = UDim2.new(1, 0, 0.125, 0)}):Play()
 		FrameNotify.ZIndex = 45
 
 		UICorner.CornerRadius = UDim.new(0, 5)
@@ -1340,6 +1356,7 @@ function Module:Create(WindowName:string,ScriptName:string,UserRoleName:string,C
 			TweenService:Create(TopBar,TweenInfo.new(0.15),{Position=UDim2.new(0.5,0,0.5,0)}):Play()
 			TweenService:Create(TopBarButton,TweenInfo.new(0.15),{ImageTransparency=0.45}):Play()
 		end
+		
 		TopBarButton.MouseButton1Click:Connect(function()
 			UserInfoToggle=not UserInfoToggle
 			if UserInfoToggle then
@@ -1357,7 +1374,18 @@ function Module:Create(WindowName:string,ScriptName:string,UserRoleName:string,C
 	local dragSpeed = 0.1
 	local dragStart = nil
 	local startPos = nil
-
+	local val = true
+	local LastButtonPosition = UDim2.new(0.76953125, 0, 0.137844607, 0)
+	
+	local function ToggleFrame(tog)
+		if tog then
+			TweenService:Create(Frame,TweenInfo.new(0.5,Enum.EasingStyle.Quint),{Size=UDim2.new(0.100000001, 350, 0.100000001, 250),Position = UDim2.new(0.5,0,0.5,0)}):Play()
+		else
+			TweenService:Create(Frame,TweenInfo.new(0.5,Enum.EasingStyle.Quint),{Size=UDim2.new(0,0,0,0)}):Play()
+			TweenService:Create(Frame,TweenInfo.new(0.5,Enum.EasingStyle.Quint),{Position = LastButtonPosition}):Play()
+		end
+	end
+	
 	TopBar.MouseEnter:Connect(function()
 		TweenService:Create(TopBar,TweenInfo.new(0.15),{Position=UDim2.new(1.005, 0,0.015, 0)}):Play()
 	end)
@@ -1410,74 +1438,115 @@ function Module:Create(WindowName:string,ScriptName:string,UserRoleName:string,C
 		end
 	end)
 
-	local Framefae = Instance.new("Frame")
-	local UICorner = Instance.new("UICorner")
-	local DropShadow = Instance.new("ImageLabel")
-	local TextButton = Instance.new("TextButton")
+	task.spawn(function()
+		local OldFreame = Frame
+		local Frame = Instance.new("Frame")
+		local UICorner = Instance.new("UICorner")
+		local ImageLabel = Instance.new("ImageLabel")
+		local Button = Instance.new("TextButton")
+		
+		Frame.AnchorPoint = Vector2.new(0.5,0.5)
+		Frame.Parent = ScreenGui
+		Frame.BackgroundColor3 = Color3.fromRGB(41, 43, 47)
+		Frame.BorderColor3 = Color3.fromRGB(0, 0, 0)
+		Frame.BorderSizePixel = 0
+		Frame.Position = UDim2.new(0.76953125, 0, 0.137844607, 0)
+		Frame.Size = UDim2.new(0,0,0,0)
+		Frame.SizeConstraint = Enum.SizeConstraint.RelativeYY
+		Frame.ZIndex = 900
+		local siechange = TweenService:Create(Frame,TweenInfo.new(1),{Size = UDim2.new(0.100000001, 0, 0.100000001, 0)})
+		
+		UICorner.CornerRadius = UDim.new(0.5, 0)
+		UICorner.Parent = Frame
 
-	Framefae.Parent = ScreenGui
-	Framefae.BackgroundColor3 = Color3.fromRGB(41, 43, 47)
-	Framefae.BorderColor3 = Color3.fromRGB(0, 0, 0)
-	Framefae.BorderSizePixel = 0
-	Framefae.Position = UDim2.new(0.657291651, 0, -1.5, 0)
-	TweenService:Create(Framefae,TweenInfo.new(0.5),{Position = UDim2.new(0.657291651, 0, 0.0101902178, 0)}):Play()
-	Framefae.Size = UDim2.new(0, 111, 0, 28)
-	Framefae.ZIndex = 66
+		ImageLabel.Parent = Frame
+		ImageLabel.AnchorPoint = Vector2.new(0.5, 0.5)
+		ImageLabel.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+		ImageLabel.BackgroundTransparency = 1.000
+		ImageLabel.BorderColor3 = Color3.fromRGB(0, 0, 0)
+		ImageLabel.BorderSizePixel = 0
+		ImageLabel.Position = UDim2.new(0.5, 0, 0.5, 0)
+		ImageLabel.Size = UDim2.new(0.899999976, 0, 0.899999976, 0)
+		ImageLabel.ZIndex = 900
+		ImageLabel.Image = "rbxassetid://7743878857"
+		ImageLabel.ImageTransparency = 1
+		
+		Button.Name = "Button"
+		Button.Parent = Frame
+		Button.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+		Button.BackgroundTransparency = 1.000
+		Button.BorderColor3 = Color3.fromRGB(0, 0, 0)
+		Button.BorderSizePixel = 0
+		Button.Size = UDim2.new(1, 0, 1, 0)
+		Button.ZIndex = 900
+		Button.Font = Enum.Font.Gotham
+		Button.Text = ""
+		Button.TextColor3 = Color3.fromRGB(255, 255, 255)
+		Button.TextScaled = true
+		Button.TextSize = 14.000
+		Button.TextWrapped = true
+		
+		siechange:Play()
+		siechange.Completed:Connect(function()
+			TweenService:Create(UICorner,TweenInfo.new(0.5),{CornerRadius = UDim.new(0, 5)}):Play()
+			TweenService:Create(ImageLabel,TweenInfo.new(0.55),{ImageTransparency = 0}):Play()
+		end)
+		
+	
+		
+		Button.MouseButton1Click:Connect(function()
+			LastButtonPosition = Frame.Position
+			val = not val
+			ToggleFrame(val)
+			
+			if val then
+				TweenService:Create(Frame,TweenInfo.new(0.1),{Size = UDim2.new(0.100000001, 0, 0.100000001, 0)}):Play()
+				TweenService:Create(ImageLabel,TweenInfo.new(0.55),{ImageTransparency = 0}):Play()
+				TweenService:Create(UICorner,TweenInfo.new(0.5),{CornerRadius = UDim.new(0, 5)}):Play()
+			else
+				TweenService:Create(Frame,TweenInfo.new(0.1),{Size = UDim2.new(0.09, 0, 0.09, 0)}):Play()
+				TweenService:Create(ImageLabel,TweenInfo.new(0.55),{ImageTransparency = 0.45}):Play()
+				TweenService:Create(UICorner,TweenInfo.new(0.5),{CornerRadius = UDim.new(0.5,0)}):Play()
+			end
+		end)
+		
+		local dragToggle = nil
+		local dragSpeed = 0.1
+		local dragStart = nil
+		local startPos = nil
 
-	UICorner.CornerRadius = UDim.new(0, 5)
-	UICorner.Parent = Framefae
-
-	DropShadow.Name = "DropShadow"
-	DropShadow.Parent = Framefae
-	DropShadow.AnchorPoint = Vector2.new(0.5, 0.5)
-	DropShadow.BackgroundTransparency = 1.000
-	DropShadow.BorderSizePixel = 0
-	DropShadow.Position = UDim2.new(0.5, 0, 0.5, 0)
-	DropShadow.Size = UDim2.new(1, 27, 1, 27)
-	DropShadow.ZIndex = 0
-	DropShadow.Image = "rbxassetid://6014261993"
-	DropShadow.ImageColor3 = Color3.fromRGB(0, 0, 0)
-	DropShadow.ImageTransparency = 0.500
-	DropShadow.ScaleType = Enum.ScaleType.Slice
-	DropShadow.SliceCenter = Rect.new(49, 49, 450, 450)
-
-	TextButton.Parent = Framefae
-	TextButton.AnchorPoint = Vector2.new(0.5, 0.5)
-	TextButton.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-	TextButton.BackgroundTransparency = 1.000
-	TextButton.BorderColor3 = Color3.fromRGB(0, 0, 0)
-	TextButton.BorderSizePixel = 0
-	TextButton.Position = UDim2.new(0.5, 0, 0.5, 0)
-	TextButton.Size = UDim2.new(0.899999976, 0, 0.754000008, 0)
-	TextButton.ZIndex = 77
-	TextButton.Font = Enum.Font.RobotoMono
-	TextButton.RichText = true
-	TextButton.Text = "<b>"..tostring(WindowName).."</b>"
-	TextButton.TextColor3 = Color3.fromRGB(255, 255, 255)
-	TextButton.TextScaled = true
-	TextButton.TextSize = 14.000
-	TextButton.TextWrapped = true
-	TextButton.TextTransparency = 0
-
-	local tog = true
-	TextButton.MouseEnter:Connect(function()
-		TweenService:Create(DropShadow,TweenInfo.new(0.5),{ImageColor3 = Color3.fromRGB(255, 255, 255)}):Play()
-	end)
-
-	TextButton.MouseLeave:Connect(function()
-		TweenService:Create(DropShadow,TweenInfo.new(0.5),{ImageColor3 = Color3.fromRGB(0, 0, 0)}):Play()
-	end)
-
-	TextButton.MouseButton1Click:Connect(function()
-		tog = not tog
-		if tog then
-			TweenService:Create(TextButton,TweenInfo.new(0.5),{TextTransparency = 0}):Play()
-			TweenService:Create(Frame,TweenInfo.new(0.5,Enum.EasingStyle.Quint),{Size=UDim2.new(0.100000001, 350, 0.100000001, 250),Position = UDim2.new(0.5,0,0.5,0)}):Play()
-		else
-			TweenService:Create(TextButton,TweenInfo.new(0.5),{TextTransparency = 0.2}):Play()
-			TweenService:Create(Frame,TweenInfo.new(0.5,Enum.EasingStyle.Quint),{Size=UDim2.new(0,0,0,0)}):Play()
-			TweenService:Create(Frame,TweenInfo.new(0.5,Enum.EasingStyle.Quint),{Position = UDim2.new(0.5,0,1,0)}):Play()
+		
+		local function updateInput(input)
+			local delta = input.Position - dragStart
+			local position = UDim2.new(startPos.X.Scale, startPos.X.Offset + delta.X,
+				startPos.Y.Scale, startPos.Y.Offset + delta.Y)
+			game:GetService('TweenService'):Create(Frame, TweenInfo.new(dragSpeed), {Position = position}):Play()
+			
+			if not val then
+				TweenService:Create(OldFreame,TweenInfo.new(0.5,Enum.EasingStyle.Quint),{Position = Frame.Position}):Play()
+			end
 		end
+
+		Button.InputBegan:Connect(function(input)
+			if (input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch) then 
+				dragToggle = true
+				dragStart = input.Position
+				startPos = Frame.Position
+				input.Changed:Connect(function()
+					if input.UserInputState == Enum.UserInputState.End then
+						dragToggle = false
+					end
+				end)
+			end
+		end)
+
+		UserInputService.InputChanged:Connect(function(input)
+			if input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch then
+				if dragToggle then
+					updateInput(input)
+				end
+			end
+		end)
 	end)
 
 	Frame:GetPropertyChangedSignal('Size'):Connect(function()
